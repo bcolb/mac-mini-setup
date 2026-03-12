@@ -118,7 +118,14 @@ echo "Disabling system sleep..."
 sudo pmset -a disablesleep 1
 
 echo "Enabling SSH..."
-sudo systemsetup -setremotelogin on
+if sudo systemsetup -setremotelogin on 2>/dev/null; then
+    echo "SSH enabled successfully"
+else
+    echo -e "${YELLOW}Note: Could not enable SSH automatically${NC}"
+    echo "Please enable manually:"
+    echo "  System Settings > General > Sharing > Remote Login"
+    echo ""
+fi
 
 defaults write com.apple.finder AppleShowAllFiles -bool true
 killall Finder
@@ -171,8 +178,9 @@ echo ""
 echo -e "${GREEN}Basic Setup Complete${NC}"
 echo ""
 echo "Next steps:"
-echo "1. Create AI environment: bash setup-ai-env.sh"
-echo "2. Download Ollama models: bash setup-ollama-models.sh"
-echo "3. Configure Syncthing to connect with MacBook Air"
-echo "4. Install heartbeat client"
+echo "1. If SSH wasn't enabled automatically, enable it in System Settings"
+echo "2. Create AI environment: bash setup-ai-env.sh"
+echo "3. Download Ollama models: bash setup-ollama-models.sh"
+echo "4. Configure Syncthing to connect with MacBook Air"
+echo "5. Install heartbeat client"
 echo ""
