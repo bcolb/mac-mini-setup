@@ -21,7 +21,7 @@ This repository contains scripts to set up a Mac Mini M4 with:
 ## Quick Start
 ```bash
 # Clone this repository
-git clone https://github.com/yourusername/mac-mini-setup.git
+git clone https://github.com/bcolb/mac-mini-setup.git
 cd mac-mini-setup
 
 # Run the main setup script
