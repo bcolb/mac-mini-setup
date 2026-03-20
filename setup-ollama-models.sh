@@ -17,6 +17,27 @@ ollama pull qwen2.5-coder:7b
 echo "Downloading Qwen 2.5 (14B) - High quality..."
 ollama pull qwen2.5:14b
 
+read -p "Download BitAgent (8B) for tool use / agentic tasks? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    BITAGENT_GGUF="BitAgent-8B.Q4_K_M.gguf"
+    BITAGENT_URL="https://huggingface.co/mradermacher/BitAgent-8B-GGUF/resolve/main/${BITAGENT_GGUF}"
+    BITAGENT_DIR="$HOME/.ollama/bitagent"
+
+    mkdir -p "$BITAGENT_DIR"
+    echo "Downloading BitAgent GGUF (~5GB)..."
+    curl -L -o "$BITAGENT_DIR/$BITAGENT_GGUF" "$BITAGENT_URL"
+
+    cat > "$BITAGENT_DIR/Modelfile" <<'EOF'
+FROM ./BitAgent-8B.Q4_K_M.gguf
+
+SYSTEM """You are an expert in composing functions. You are given a question and a set of possible functions. Based on the question, you will need to make one or more function/tool calls to achieve the purpose. If none of the functions can be used, point it out. You MUST put it in the format of [func_name(param=value, param2=value2)]."""
+EOF
+
+    echo "Importing BitAgent into Ollama..."
+    ollama create bitagent -f "$BITAGENT_DIR/Modelfile"
+fi
+
 read -p "Download Mistral (7B) for fast inference? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
