@@ -30,8 +30,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
     cat > "$BITAGENT_DIR/Modelfile" <<'EOF'
 FROM ./BitAgent-8B.Q4_K_M.gguf
-
-SYSTEM """You are an expert in composing functions. You are given a question and a set of possible functions. Based on the question, you will need to make one or more function/tool calls to achieve the purpose. If none of the functions can be used, point it out. You MUST put it in the format of [func_name(param=value, param2=value2)]."""
 EOF
 
     echo "Importing BitAgent into Ollama..."
